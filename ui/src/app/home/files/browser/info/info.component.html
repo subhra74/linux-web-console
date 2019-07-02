@@ -1,0 +1,72 @@
+<div *ngIf="info"
+  style="position: fixed; width: 100vw; max-width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; justify-content: center; left: 0px; top: 0px; z-index: 150;">
+  <div class="info-wrapper-container">
+    <div class="info-wrapper">
+      <div style="padding-bottom: 10px; ">
+        <span style="font-size: 20px;">Information</span>
+      </div>
+      <div class="info-item">
+        <span style="padding-right: 20px; max-width: 400px;">Name</span>
+        <span>{{info.name}}</span>
+      </div>
+      <div class="info-item">
+        <span style="padding-right: 20px;">Type</span>
+        <span>{{info.type}}</span>
+      </div>
+      <div class="info-item">
+        <span style="padding-right: 20px;">Size</span>
+        <span>{{info.size}}</span>
+      </div>
+      <div class="info-item">
+        <span style="padding-right: 20px;">Modified date</span>
+        <span>{{info.lastModified|date:'medium'}}</span>
+      </div>
+      <div class="info-item">
+        <span style="padding-right: 20px;">Creation date</span>
+        <span>{{info.lastModified|date:'medium'}}</span>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <span style="padding-right: 20px;">Owner</span>
+        <span>{{posixPerm.owner}}</span>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <span style="padding-right: 20px;">Owner access</span>
+        <select class="form-control width-200px" [(ngModel)]="posixPerm.ownerAccess">
+          <option value="READ_ONLY">Read-only</option>
+          <option value="WRITE_ONLY">Write-only</option>
+          <option value="READ_WRITE">Read and write</option>
+          <option value="NONE">None</option>
+        </select>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <span style="padding-right: 20px;">Group</span>
+        <span>{{posixPerm.group}}</span>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <span style="padding-right: 20px;">Group access</span>
+        <select class="form-control  width-200px" [(ngModel)]="posixPerm.groupAccess">
+          <option value="READ_ONLY">Read-only</option>
+          <option value="WRITE_ONLY">Write-only</option>
+          <option value="READ_WRITE">Read and write</option>
+          <option value="NONE">None</option>
+        </select>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <span style="padding-right: 20px;">Others access</span>
+        <select class="form-control width-200px" [(ngModel)]="posixPerm.otherAccess">
+          <option value="READ_ONLY">Read-only</option>
+          <option value="WRITE_ONLY">Write-only</option>
+          <option value="READ_WRITE">Read and write</option>
+          <option value="NONE">None</option>
+        </select>
+      </div>
+      <div *ngIf="posixPerm" class="info-item">
+        <div><input type="checkbox" [(ngModel)]="posixPerm.executable"><span>Executable</span></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
+        <button *ngIf="posixPerm" class="btn btn-primary mr-2" (click)="saveAndClose()">Save</button>
+        <button class="btn btn-primary" (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

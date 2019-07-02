@@ -1,0 +1,41 @@
+<div
+  style="display: flex; flex-direction: column; align-items: center; padding-top: 50px;  height: 100vh; width: 100vw;">
+  <div>
+    <img src="assets/logo.png" style="width: 150px; margin: auto;display: block;">
+    <div
+      style="line-height: 55px; font-size: 40px; text-align: center; padding-bottom: 40px; padding-top: 20px; color: gray;">
+      <span>Easy Web Shell</span>
+    </div>
+    <form style="min-width: 300px; background: rgb(240,240,240, 0.3); padding: 25px; box-shadow: 3px 3px 20px 0px gray;"
+      (ngSubmit)="signIn(user.value,pass.value,chk.checked)">
+      <div style="padding-top: 5px; padding-bottom: 20px;">
+        <span>Sign In</span>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" id="user" aria-describedby="user" placeholder="Username" #user>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="pass" placeholder="Password" #pass>
+      </div>
+      <!-- <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" #chk>
+        <label class="form-check-label" for="exampleCheck1">Remember me</label>
+      </div> -->
+      <label class="container">Remember me
+        <input type="checkbox" checked="checked" #chk>
+        <span class="checkmark"></span>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;"
+        (click)="signIn(user.value,pass.value,chk.checked)" [disabled]="busy">
+        <span *ngIf="busy else s">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span> Signing in...</span>
+        </span>
+        <ng-template #s><span>Sign in</span></ng-template>
+      </button>
+      <div *ngIf="errorMessage" style="padding-top: 20px; color: red;">
+        <span>{{errorMessage}}</span>
+      </div>
+    </form>
+  </div>
+</div>

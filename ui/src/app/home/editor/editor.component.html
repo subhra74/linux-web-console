@@ -1,0 +1,37 @@
+<div style="height: calc(100vh - 55px); width: 100vw; display: flex; flex-direction: column; position: fixed; top: 55px; left: 0px; z-index: 100; background: white;"
+       *ngIf="tabKeys.length>0">
+       <div class="desktop-tabs" *ngIf="service.selectedEditorTab">
+              <div *ngFor="let tab of tabKeys"
+                     style="padding: 10px; padding-left: 5px; padding-right: 5px; display: flex; justify-content: space-between;"
+                     (click)="loadSession(tab);selectTab(tab)"
+                     [ngStyle]="{'background':service.selectedEditorTab==tab?'rgb(230,230,230)':'rgb(245,245,245)'}">
+                     <span style="line-height: 30px; margin-left: 10px; margin-right: 10px;">{{getTabName(tab)}}</span>
+                     <div style="width: 20px;">
+                            <span style="line-height: 30px;  width: 20px; text-align: center; color: gray;"
+                                   (click)="closeTab(tab)"><i class="fa fa-times" aria-hidden="true"></i></span>
+                     </div>
+              </div>
+       </div>
+       <div class="mobile-tabs" *ngIf="service.selectedEditorTab">
+              <select style="flex: 1; border: 1px solid rgb(230,230,230);" (change)="selectItem($event.target.value)">
+                     <option *ngFor="let tab of tabKeys" [value]="tab" [selected]="service.selectedEditorTab==tab">
+                            {{getTabName(tab)}}</option>
+              </select>
+       </div>
+       <div class="code-editor" #codeEditor style="overflow: auto; min-height: 100px; flex: 1;">
+       </div>
+       <div style="border-top: 1px solid  rgb(230,230,230); padding: 10px; display: flex;">
+              <button class="btn btn-primary mr-2" type="button" (click)="save()" [disabled]="saving">
+                     <span *ngIf="saving" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                     {{saving?"Saving...":"Save"}}
+              </button>
+              <!-- <button class="btn btn-primary mr-2" (click)="save()">Save</button> -->
+              <button class="btn btn-secondary" (click)="close()">Close</button>
+       </div>
+</div>
+
+<div *ngIf="tabKeys.length<1"
+       style="height: calc(100vh - 55px); width: 100vw; position: fixed; top: 55px; left: 0px; z-index: 100; background: white; text-align: center; padding-top: 30px;">
+       <span>No file is opened, please goto files and select some.</span>
+</div>

@@ -1,0 +1,16 @@
+<div 
+  style="position: fixed; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; justify-content: center; left: 0px; top: 0px; z-index: 150;">
+  <div style="margin: auto; box-shadow: 5px 5px 5px black;">
+    <div style="display: flex; flex-direction: column; background: white; padding: 20px; border-radius: 5px;">
+      <div class="form-group">
+        <label for="txt">New {{itemType}}</label>
+        <input type="text" class="form-control" id="txt" placeholder="Name of the file or folder" [(ngModel)]="fileName">
+      </div>
+      <div style="display: flex;">
+        <button class="btn btn-primary mr-2" style="flex: 1;" (click)="createItem()">Create</button>
+        <button class="btn btn-secondary" style="flex: 1;" (click)="cancelDialog()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+

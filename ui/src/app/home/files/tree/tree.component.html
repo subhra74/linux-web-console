@@ -1,0 +1,26 @@
+<div style="width: 100%; min-width: 200px; padding: 5px; display: flex; padding-left: 10px;" *ngIf="model">
+  <span style="padding-left: 5px; width: 20px; min-width: 20px; text-align: center; cursor: pointer;" (click)="toggleState()">
+    <i *ngIf="!model.leafNode" [class]="model.expanded?'fa fa-angle-down': 'fa fa-angle-right'" aria-hidden="true"></i>
+  </span>
+  <span *ngIf="model.leafNode" style="padding-left: 5px;">
+    <i class="fa fa-file-o" aria-hidden="true"></i>
+  </span>
+  <span *ngIf="!model.leafNode" style="padding-left: 5px;">
+    <i [class]="icon?('fa '+icon):'fa fa-folder-o'" aria-hidden="true"></i>
+  </span>
+  <span style="padding-left: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;"
+    class="noselect" (click)="onClick()" (contextmenu)="onContextMenu($event,contextmenu)">{{model.name}}</span>
+</div>
+<div *ngIf="model&&!model.leafNode&&model.children&&model.expanded&&model.children.length>0"
+  style="padding-left: 15px;">
+  <app-tree style="flex: 1" *ngFor="let node of model.children" [model]="node" [parent]="model"></app-tree>
+</div>
+
+
+<div [style.display]="showCtx?'flex':'none'"
+  style="z-index: 99; width: 200px; flex-direction: column;display: none; position: fixed; background: white; border: 1px solid rgb(200,200,200); box-shadow: 3px 3px 10px 0px rgb(200,200,200);"
+  #contextmenu>
+  <div class="context-menu-items" (click)="openInNewTab()">Open in new tab</div>
+  <div class="context-menu-items" (click)="openInTab()">Open</div>
+  <div class="context-menu-items" (click)="copyPath()">Copy path</div>
+</div>

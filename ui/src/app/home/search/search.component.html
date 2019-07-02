@@ -1,0 +1,63 @@
+<div style="height: calc(100vh - 55px); width: 100vw; position: fixed; left: 0px; top: 55px; background: white; display: flex; z-index: 100; flex-direction: column;" *ngIf="!loading">
+  <div style="display: flex; justify-content: center; padding-top: 20px;" *ngIf="!ctx.searching">
+    <div>
+      <div class="form-group">
+        <label for="searchText">Search text</label>
+        <input type="text" class="form-control" id="searchText" placeholder="What to search" #txt>
+        <small id="searchText" class="form-text text-muted">We will try to find all the files/folders that whose name
+          contains above text</small>
+      </div>
+      <div class="form-group">
+        <label for="dir">Search in</label>
+        <input type="text" class="form-control" id="dir" placeholder="Where to search" #dir>
+        <small id="dir" class="form-text text-muted">We will look for the matching files or folders only in this
+          location</small>
+      </div>
+      <button class="btn btn-primary" (click)="search(txt.value, dir.value)">Search</button>
+    </div>
+  </div>
+  <div *ngIf="ctx.searching&&!ctx.isDone" style="border-bottom: 1px solid rgb(230,230,230);">
+    <div style="display: flex; justify-content: space-between; padding: 10px;">
+      <div style="display: flex; padding: 5px;">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span style="padding: 5px;">Searching</span>
+      </div>
+      <button (click)="cancel()" class="btn btn-primary">Cancel</button>
+    </div>
+  </div>
+  <div *ngIf="ctx.searching&&ctx.isDone" style="border-bottom: 1px solid rgb(230,230,230);">
+    <div style="display: flex; justify-content: space-between; padding: 10px;">
+      <div style="display: flex; padding: 5px;">
+        <span style="padding: 5px;">{{getItemCount()}}</span>
+      </div>
+      <button (click)="newSearch()" class="btn btn-secondary">New search</button>
+    </div>
+  </div>
+  <div *ngIf="ctx.searching" style="flex: 1; overflow: auto;">
+    <div>
+      <div *ngFor="let file of ctx.files" style="cursor: pointer;" (click)="openFile(file)">
+        <span style="padding: 5px; padding-left: 10px;"><i class="fa fa-file" aria-hidden="true"></i></span>
+        <span style="padding: 5px;">{{file}}</span>
+      </div>
+      <div *ngFor="let folder of ctx.folders" style="cursor: pointer;" (click)="openFolder(folder)">
+        <span style="padding: 5px; padding-left: 10px;">
+          <i class="fa fa-folder" aria-hidden="true"></i>
+        </span>
+        <span style="padding: 5px;">
+          {{folder}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading"
+  style="position: fixed; width: 100vw; height: 100vh; z-index: 100; display: flex; justify-content: center; overflow: hidden;">
+  <div style=" width: 5rem; height: 5rem; font-size: 30px; margin: auto;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>

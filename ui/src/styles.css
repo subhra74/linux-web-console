@@ -1,0 +1,33 @@
+@import url("bootstrap/dist/css/bootstrap.css");
+@import url("font-awesome/css/font-awesome.css");
+@import url("xterm/dist/xterm.css");
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+
+div:focus{
+    outline: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+}
+
+.context-menu-items {
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+.context-menu-items:hover {
+    background: deepskyblue;
+    color: white;
+}

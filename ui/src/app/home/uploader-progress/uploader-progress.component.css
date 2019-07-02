@@ -1,0 +1,52 @@
+.desktop-label {
+    color: white;
+    line-height: 55px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: 1px solid black;
+    min-width: 100px;
+    text-align: center;
+    position: relative;
+}
+
+.mobile-label {
+    cursor: pointer;
+    line-height: 55px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: gray;
+    text-align: center;
+    display: none;
+}
+
+.popup-close {
+    display: flex;
+    justify-content: space-between
+}
+
+.progress-popup {
+    position: fixed;
+    right: 0px;
+    border-left: 1px solid rgb(230, 230, 230);
+    color: black;
+    background: white;
+    top: 56px;
+    height: calc(100vh - 55px);
+    width: 400px;
+    box-shadow: -3px 3px 3px 0px rgb(230, 230, 230);
+    z-index: 101;
+}
+
+@media (max-width:800px) {
+    [class="desktop-label"] {
+        display: none;
+    }
+    [class="mobile-label"] {
+        display: inline;
+    }
+    [class="progress-popup"] {
+        top: 0px;
+        height: 100vh;
+        width: 100vw;
+    }
+}

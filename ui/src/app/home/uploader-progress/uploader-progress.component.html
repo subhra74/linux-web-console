@@ -1,0 +1,62 @@
+<div class="desktop-label">
+  <span style="color: gray; padding: 5px; cursor: pointer;" (click)="togglePopup()">Transfers</span>
+  <span class="badge badge-secondary" *ngIf="hasAnyTransfers()">{{getTransferCount()}}</span>
+</div>
+
+<div class="mobile-label" (click)="togglePopup()">
+  <i class="fa fa-exchange" aria-hidden="true"></i>
+  <span class="badge badge-secondary" *ngIf="hasAnyTransfers()">{{getTransferCount()}}</span>
+</div>
+
+<div class="progress-popup" *ngIf="showPopup">
+
+
+  <div class="popup-close">
+    <span style="padding: 5px;">Active transfers</span>
+    <span style="width: 30px; height: 30px; line-height: 30px; text-align: center; cursor: pointer;"
+      (click)="showPopup=false;">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+
+  <div *ngFor="let upload of service.uploads; let i=index" (mouseenter)="hoverIndex=i" (mouseleave)="hoverIndex=-1"
+    style="position: relative; display: flex;">
+    <div *ngIf="upload.files">
+
+    </div>
+    <div
+      style="border-bottom: 1px solid rgb(240,240,240); padding: 10px; padding-bottom: 0px; margin: 5px; padding-top: 5px; flex: 1;">
+      <div
+        style="padding-top: 5px; padding-bottom: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        {{upload.name}}
+      </div>
+      <div style="padding-bottom: 10px; display: flex;">
+        <span *ngIf="upload.status=='Failed'" style="flex: 1;">Error: Uploading failed</span>
+        <ngb-progressbar *ngIf="!upload.failed" type="success" [value]="upload.percent" style="flex: 1;">
+        </ngb-progressbar>
+      </div>
+    </div>
+    <div style="position: absolute; right: 5px; top: 0px; cursor: pointer;" (click)="service.cancelUpload(upload)">
+      <span style="font-size: 25px;">&times;</span>
+    </div>
+  </div>
+  <div *ngFor="let fileop of service.fileOperations; let i=index" (mouseenter)="hoverIndex=i"
+    (mouseleave)="hoverIndex=-1" style="position: relative; display: flex;">
+    <div
+      style="border-bottom: 1px solid rgb(240,240,240); padding: 10px; padding-bottom: 0px; margin: 5px; padding-top: 5px; flex: 1;">
+      <div
+        style="padding-top: 5px; padding-bottom: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        {{fileop.name}}
+      </div>
+      <div style="padding-bottom: 10px; display: flex;">
+        <span *ngIf="fileop.hasError=='Failed'" style="flex: 1;">Error: Operation failed</span>
+        <ngb-progressbar *ngIf="!fileop.hasError" type="success" [value]="fileop.progress" style="flex: 1;">
+        </ngb-progressbar>
+      </div>
+    </div>
+    <div style="position: absolute; right: 5px; top: 0px; cursor: pointer;"
+      (click)="service.cancelFileOperation(fileop.id)">
+      <span style="font-size: 25px;">&times;</span>
+    </div>
+  </div>
+</div>

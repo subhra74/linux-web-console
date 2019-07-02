@@ -1,0 +1,20 @@
+.desktop-tabs {
+    display: none;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    cursor: pointer;
+    overflow: auto;
+}
+
+.mobile-tabs{
+    display: flex;
+}
+
+@media(min-width: 800px){
+    [class="desktop-tabs"]{
+        display: flex;
+    }
+
+    [class="mobile-tabs"]{
+        display: none;
+    }
+}

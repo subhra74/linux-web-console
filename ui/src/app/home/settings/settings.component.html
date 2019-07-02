@@ -1,0 +1,28 @@
+<div
+  style="height: calc(100vh - 55px); width: 100vw; position: fixed; left: 0px; top: 55px; background: white; z-index: 100; display: flex; flex-direction: column;  align-items: center; padding-top: 50px;">
+  <div style="padding:30px; box-shadow: 3px 3px 15px 5px gray; min-width: 400px;">
+    <div class="form-group">
+      <label for="username">New user name</label>
+      <input type="text" class="form-control" placeholder="User name" [(ngModel)]="userName">
+    </div>
+    <div class="form-check" style="padding-bottom: 10px;">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" #chk>
+      <label class="form-check-label" for="exampleCheck1">Chenge password</label>
+    </div>
+    <div class="form-group" *ngIf="chk.checked">
+      <label for="password">New Password</label>
+      <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password">
+    </div>
+    <div class="form-group">
+      <label for="username">Preferred shell</label>
+      <input type="text" class="form-control" placeholder="Shell" [(ngModel)]="shell">
+    </div>
+    <button class="btn btn-primary" type="button" (click)="save()" [disabled]="saving">
+      <span *ngIf="saving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      {{saving?"Saving...":"Save"}}
+    </button>
+    <div *ngIf="error" style="padding-top: 20px; color: red;">
+      <span>{{error}}</span>
+    </div>
+  </div>
+</div>

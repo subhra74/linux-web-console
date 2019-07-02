@@ -1,0 +1,366 @@
+<div style="height: 100%; width: 100%; display: flex;"  (click)="onWindowClicked(contextmenu)" class="noselect">
+  <!-- navigation tree start -->
+  <div class="nav-tree">
+    <!-- <app-tree [model]="service.tree1" [icon]="'fa-bookmark-o'"></app-tree> -->
+    <app-tree [model]="service.tree2" [icon]="'fa-folder-o'"></app-tree>
+    <app-tree [model]="service.tree3" [icon]="'fa-hdd-o'"></app-tree>
+  </div>
+
+  <!-- navigation tree end -->
+
+  <div *ngIf="service.tabs&&service.tabs.length>0" style="flex: 1; display: flex; flex-direction: column;">
+
+    <!-- tabbed pane for folders start -->
+    <div *ngIf="service.tabs.length>1" class="desktop-file-tabs">
+      <div (click)="showTab(i)" (mouseenter)="hoverIndex=i" (mouseleave)="hoverIndex=-1"
+        *ngFor="let tab of service.tabs; let i=index"
+        [ngStyle]="{'background': service.selectedTab==i? 'rgb(245,245,245)' :  'rgb(230,230,230)'}"
+        style="padding: 10px; padding-left: 10px; padding-right: 5px;  display: flex; justify-content: space-between; cursor: pointer;">
+        <span style="line-height: 30px; margin-left: 10px; margin-right: 10px;">{{tab.folderName}}</span>
+        <div style="width: 20px;">
+          <span style="line-height: 30px;  width: 20px; text-align: center; color: gray;" *ngIf="hoverIndex==i"
+            (click)="closeTab(i)"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+    <!-- tabbed pane for folders end -->
+
+    <!-- desktop folder navigation components start -->
+
+    <div class="desktop-nav">
+      <div style="flex: 1; margin-right: 10px;">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" (click)="navigateUp()" style="cursor: pointer;" placement="right"
+              ngbTooltip="Up one level"><i class="fa fa-arrow-up"></i></span>
+            <span class="input-group-text" style="cursor: pointer;" (click)="navigateHome()" placement="right"
+              ngbTooltip="Home"><i class="fa fa-home"></i></span>
+          </div>
+          <input type="text" class="form-control" (keyup.enter)="navigateTo(address.value)"
+            [value]="service.tabs[service.selectedTab].currentDirectory" #address>
+          <div class="input-group-append">
+            <span class="input-group-text" (click)="navigateTo(address.value)" placement="left" ngbTooltip="Go"><i
+                class="fa fa-arrow-right"></i></span>
+            <span class="input-group-text" (click)="navigateTo(service.tabs[service.selectedTab].currentDirectory)"
+              placement="left" ngbTooltip="Refresh">
+              <i class="fa fa-refresh"></i></span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-right: 10px;">
+        <div class="input-group">
+          <div class="input-group-prepend" style="position: relative;">
+            <span class="input-group-text" (click)="uploadPopup=!uploadPopup; $event.stopPropagation()"
+              style="cursor: pointer; padding: 10px;" placement="left" ngbTooltip="Upload">
+              <i class="fa fa-upload"></i>
+            </span>
+          </div>
+          <div class="input-group-append">
+            <span class="input-group-text" style="cursor: pointer;  padding: 10px;" (click)="downloadFiles()"
+              placement="left" ngbTooltip="Download">
+              <i class="fa fa-download"></i>
+            </span>
+          </div>
+        </div>
+        <div *ngIf="uploadPopup"
+          style="position: fixed; z-index: 30; background: white;  box-shadow: 3px 3px rgb(240,240,240);"
+          (focusout)="uploadPopup=false">
+          <div class="context-menu-items" (click)="file.click(); uploadPopup=false"><span>Upload
+              file</span>
+          </div>
+          <div class="context-menu-items" (click)="folder.click(); uploadPopup=false"><span>Upload
+              folder</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" (click)="newFile()" style="cursor: pointer; padding: 10px;" placement="left"
+              ngbTooltip="New file">
+              <i class="fa fa-file" aria-hidden="true"></i>
+            </span>
+            <span class="input-group-text" (click)="newFolder()" style="cursor: pointer;  padding: 10px;"
+              placement="left" ngbTooltip="New folder">
+              <i class="fa fa-folder" aria-hidden="true"></i>
+            </span>
+            <span class="input-group-text" (click)="deleteFiles()" style="cursor: pointer;  padding: 10px;"
+              placement="left" ngbTooltip="Delete">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </span>
+          </div>
+          <div class="input-group-append">
+            <span class="input-group-text" (click)="showDropDownMenu(contextmenu,$event)"
+              style="cursor: pointer;  padding: 10px;" placement="left" ngbTooltip="More">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- desktop folder navigation components end -->
+
+    <div class="file-list" *ngIf="service.tabs[service.selectedTab]&&service.tabs[service.selectedTab].files">
+      <!-- header start -->
+      <div [style.width]="content.clientWidth+'px'" class="file-list-header" #header>
+        <span style="flex: 2; line-height: 50px; padding-left: 20px;" (click)="sort(0)">
+          <span style="padding-right: 10px;">Name</span>
+          <span *ngIf="this.sortColumn==0&&this.ascendingSort">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="this.sortColumn==0&&!this.ascendingSort">
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </span>
+        </span>
+        <span style="flex: 1; line-height: 50px;" (click)="sort(1)">
+          <span style="padding-right: 10px;">
+            Size
+          </span>
+          <span *ngIf="this.sortColumn==1&&this.ascendingSort">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="this.sortColumn==1&&!this.ascendingSort">
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </span>
+        </span>
+        <span style="flex: 1; line-height: 50px;" (click)="sort(2)">
+          <span style="padding-right: 10px;">Modified</span>
+          <span *ngIf="this.sortColumn==2&&this.ascendingSort">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="this.sortColumn==2&&!this.ascendingSort">
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </span>
+        </span>
+        <span *ngIf="posix" style="flex: 1; line-height: 50px;" (click)="sort(3)">
+          <span style="padding-right: 10px;">
+            Permission
+          </span>
+          <span *ngIf="this.sortColumn==3&&this.ascendingSort">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="this.sortColumn==3&&!this.ascendingSort">
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </span>
+        </span>
+        <span *ngIf="posix" style="flex: 1; line-height: 50px;" (click)="sort(4)">
+          <span>
+            Owner
+          </span>
+          <span *ngIf="this.sortColumn==4&&this.ascendingSort">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="this.sortColumn==4&&!this.ascendingSort">
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </span>
+        </span>
+      </div>
+      <!-- header end -->
+
+      <!-- actual content begin -->
+
+      <div #content class="file-list-content-wrapper" (keydown)="keyup($event)" id="list" #list>
+        <div *ngFor="let file of service.tabs[service.selectedTab].files; let i=index" class="file-list-item-row"
+          [style.color]="file.selected?'white':'black'" [style.background]="file.selected?'deepskyblue':'white'"
+          (dblclick)="file.type === 'Directory'?navigateTo(file.path): openItem(file)"
+          (click)="itemClicked(file,$event.ctrlKey, divitem.className)" tabindex="0" (keydown)="onKeyDown($event)"
+          (contextmenu)="onContextMenu($event, file, contextmenu, file)" #divitem>
+
+          <!-- desktop layout for row start -->
+          <div class="desktop-file-list-first-item">
+            <span style="line-height: 50px; font-size: 30px; padding-left: 15px; padding-right: 15px; color: gray;"><i
+                [class]="getFileIcon(file)" aria-hidden="true"></i></span>
+
+            <!-- <img [src]="(file.type=='Directory'||file.type=='DirLink')?'assets/folder.png':'assets/file.png'"
+              style="height: 40px; margin-top: 5px; margin-left: 10px; margin-right: 10px;"> -->
+            <span (mousedown)="preventTextSelection($event)"
+              style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="noselect">
+              {{file.name}}
+            </span>
+          </div>
+          <div class="desktop-file-list-other-item">
+            {{(file.type!='Directory'&&file.type!='DirLink')?formatFileSize(file.size):''}}</div>
+          <div class="desktop-file-list-other-item">
+            {{file.lastModified|date:'medium'}}</div>
+          <div *ngIf="posix" class="desktop-file-list-other-item">
+            {{file.permissionString}}</div>
+          <div *ngIf="posix" class="desktop-file-list-other-item">
+            {{file.user}}</div>
+          <!-- desktop layout for row end -->
+
+          <!-- mobile layout for row start -->
+          <div class="mobile-file-list-row">
+            <div
+              style="height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center;">
+              <span style="font-size: 40px; padding-left: 15px; padding-right: 15px; color: gray;"><i
+                  [class]="getFileIcon(file)" aria-hidden="true"></i></span>
+              <!-- <img [src]="(file.type=='Directory'||file.type=='DirLink')?'assets/folder.png':'assets/file.png'"
+                style="height: 40px; margin: auto; padding-left: 5px;"> -->
+            </div>
+            <div
+              style="display: flex; flex-direction: column; flex: 1; height: 100%; align-content: center; justify-content: center;">
+              <div style="display: flex; flex-direction: column;">
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; " class="noselect">
+                  <span style="padding-left: 5px; font-size: 16px;">
+                    {{file.name}}
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <div>
+                    <span style="padding-left: 5px; color: gray;">
+                      {{file.lastModified|date:'medium'}}
+                    </span>
+                  </div>
+                  <div>
+                    <span style="padding-right: 10px; color: gray;">
+                      {{(file.type!='Directory'&&file.type!='DirLink')?formatFileSize(file.size):''}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- mobile layout for row end -->
+
+        </div>
+      </div>
+
+      <!-- actual content end -->
+
+    </div>
+
+    <!-- mobile folder navigation start -->
+    <div class="mobile-nav">
+      <span (click)="navigateUp()" style="cursor: pointer;  padding: 10px;"><i class="fa fa-arrow-up"></i></span>
+      <span style="cursor: pointer; padding: 10px;" (click)="navigateHome()"><i class="fa fa-home"></i></span>
+      <span style="cursor: pointer; padding: 10px;"
+        (click)="navigateTo(service.tabs[service.selectedTab].currentDirectory)">
+        <i class="fa fa-refresh"></i></span>
+      <span (click)="file.click();" style="cursor: pointer; padding: 10px;">
+        <i class="fa fa-upload"></i>
+      </span>
+      <span style="cursor: pointer;  padding: 10px;" (click)="downloadFiles()">
+        <i class="fa fa-download"></i>
+      </span>
+      <span [style.background]="multipleSelectionMode?'rgb(230,230,230)':'rgb(245,245,245)'"
+        (click)="multipleSelectionMode=!multipleSelectionMode" style="cursor: pointer;  padding: 10px;">
+        <i class="fa fa-check" aria-hidden="true"></i>
+      </span>
+      <!-- <span (click)="navigateUp()" style="cursor: pointer; padding: 10px;">
+          <i class="fa fa-file" aria-hidden="true"></i>
+        </span>
+        <span (click)="navigateHome()" style="cursor: pointer;  padding: 10px;">
+          <i class="fa fa-folder" aria-hidden="true"></i>
+        </span>
+        <span (click)="navigateHome()" style="cursor: pointer;  padding: 10px;">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </span> -->
+      <span style="cursor: pointer;  padding: 10px;" (click)="showDropdownCtx=true; $event.stopPropagation()">
+        <i class="fa fa-ellipsis-h"></i>
+      </span>
+    </div>
+    <!-- mobile folder navigation end -->
+
+  </div>
+</div>
+
+<!-- hidden upload divs start -->
+<div style="display:none">
+  <input type="file" #file (change)="fileSelectedForUpload($event)">
+</div>
+<div style="display:none">
+  <input type="file" webkitdirectory mozdirectory #folder (change)="folderSelectedForUpload($event)">
+</div>
+<!-- hidden upload divs end -->
+
+<!-- file menu start -->
+<div
+  style="display: none; width: 200px; flex-direction: column;display: none; position: fixed; background: white; border: 1px solid rgb(200,200,200); box-shadow: 3px 3px 10px 0px rgb(200,200,200);"
+  #contextmenu (click)="onWindowClicked(contextmenu)">
+  <div class="context-menu-items" (click)="openInNewTab()">Open in new tab</div>
+  <div class="context-menu-items" (click)="openInTab()">Open</div>
+  <div *ngIf="isAnySelection()" class="context-menu-items" (click)="deleteFiles()">Delete</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showRenameDialog=true">Rename</div>
+  <div class="context-menu-items" (click)="copyFiles(true)">Cut</div>
+  <div class="context-menu-items" (click)="copyFiles(false)">Copy</div>
+  <div *ngIf="service.copiedFilePath.files&&service.copiedFilePath.files.length>0" class="context-menu-items"
+    (click)="pasteFiles()">Paste</div>
+  <div class="context-menu-items" (click)="showInfo()">Properties</div>
+</div>
+<!-- file menu end -->
+
+
+
+<!-- rename dialog start-->
+<app-rename *ngIf="showRenameDialog" (dialogCancelled)="showRenameDialog=false"
+  (fileNameChanged)="showRenameDialog=false; renameFile($event);"></app-rename>
+<!-- rename dialog end-->
+
+<!-- new folder start -->
+<app-new-item *ngIf="showNewFolderItem" [itemType]="'folder'" (dialogCancelled)="showNewFolderItem=false"
+  (fileNameEntered)="showNewFolderItem=false; createFolder($event);"></app-new-item>
+<!-- new folder end -->
+
+<!-- new file start -->
+<app-new-item *ngIf="showNewFileItem" [itemType]="'file'" (dialogCancelled)="showNewFileItem=false"
+  (fileNameEntered)="showNewFileItem=false; createFile($event);"></app-new-item>
+<!-- new file end -->
+
+<!-- loading indicator start -->
+<div *ngIf="loading"
+  style="width: 100vw; height: 100vh; position: absolute; left: 0px; top: 0px; background: rgba(255,255,255,0.5);  z-index: 20; display: flex; justify-content: center; overflow: hidden;">
+  <div class="spinner-border text-primary" role="status"
+    style="margin: auto; width: 5rem; height: 5rem; font-size: 30px;">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<!-- loading indicator end -->
+
+<!-- info dialog start -->
+<app-info *ngIf="showInfoDialog" (dialogClosed)="showInfoDialog=false"></app-info>
+<!-- info dialog end -->
+
+<!-- dropdown context menu start -->
+<div *ngIf="showDropdownCtx" class="dropdown-ctx-menu" #contextmenu1>
+  <div class="context-menu-items" (click)="newFolder(); onWindowClicked(contextmenu)">New folder</div>
+  <div class="context-menu-items" (click)="newFile(); onWindowClicked(contextmenu)">New file</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; openInNewTab()">Open in
+    new tab</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; openInTab()">Open</div>
+  <div *ngIf="isAnySelection()" class="context-menu-items" (click)="showDropdownCtx=false; deleteFiles()">Delete
+  </div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; showRenameDialog=true">
+    Rename</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; copyFiles(true)">Cut</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; copyFiles(false)">Copy
+  </div>
+  <div *ngIf="service.copiedFilePath.files&&service.copiedFilePath.files.length>0" class="context-menu-items"
+    (click)="showDropdownCtx=false; pasteFiles()">Paste</div>
+  <div *ngIf="isSingleSelection()" class="context-menu-items" (click)="showDropdownCtx=false; showInfo()">Properties
+  </div>
+</div>
+<!-- dropdown context  menu end -->
+
+<app-image-viewer [url]="getSelectedFile().path" *ngIf="previewer=='image'" (componentClosed)="previewer=null">
+</app-image-viewer>
+<app-media-player [url]="getSelectedFile().path" *ngIf="previewer=='video'" (componentClosed)="previewer=null">
+</app-media-player>
+<app-unsupported-content-viewer [url]="getSelectedFile().path" [file]="getSelectedFile().name"
+  *ngIf="previewer=='unsupported'" (componentClosed)="previewer=null" (onDownload)="downloadFiles()"
+  (onOpen)="openAsText();previewer=null">
+</app-unsupported-content-viewer>
+
+<div *ngIf="toastVisible"
+  style="background: rgb(0,0,0,0.2); width: 100vw; height: 100vh; position: fixed; z-index: 305; display: flex; flex-direction: column; justify-content: center; align-items: center; left: 0px; top: 0px;">
+  <div
+    style="background: white; min-width: 400px; display: flex; flex-direction: column;  border-radius: 5px; box-shadow: 2px 2px 5px 0px gray; padding: 10px;">
+    <span style="padding-top: 20px;padding-bottom: 20px;">{{toastMessage}}</span>
+    <div style="display: flex; flex-direction: row-reverse;">
+      <button class="btn btn-primary" (click)="toastVisible=false">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="toastVisible&&toastMessage"
+  style="position: fixed; bottom: 30px; left: 30px; padding: 5px; padding-left: 20px; padding-right: 20px; background: rgb(30,30,30); border-radius: 5px; box-shadow: 2px 2px 5px 0px black; color: white;">
+  <span>{{toastMessage}}</span>
+</div> -->

@@ -1,0 +1,142 @@
+<div style="width: 100vw; height: 100vh;">
+  <div class="desktop-nav">
+    <div class="desktop-title">
+      <span>Easy web shell</span>
+    </div>
+    <!-- <a style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      routerLink="/app/files" routerLinkActive="active-link">
+      Files
+    </a>
+    <a style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      routerLink="/app/editor" routerLinkActive="active-link">
+      Editor
+    </a>
+    <a style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      routerLink="/app/search" routerLinkActive="active-link">
+      Search
+    </a>
+    <a style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      routerLink="/app/settings" routerLinkActive="active-link">
+      Settings
+    </a> -->
+
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view=null" [ngClass]="{'active-link': view==null}">
+      Files
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='editor'" [ngClass]="{'active-link': view=='editor'}">
+      Editor
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='search'" [ngClass]="{'active-link': view=='search'}">
+      Search
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='settings'" [ngClass]="{'active-link': view=='settings'}">
+      Settings
+    </span>
+
+    <!-- <span *ngFor="let tab of tabs; let i=index"
+      style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center;"
+      [style.background]="i==selectedIndex?'rgb(230,230,230)':'white'" (click)="selectTab(i)">
+      {{tab.text}}
+    </span> -->
+    <app-uploader-progress></app-uploader-progress>
+    <span style="color: gray; cursor: pointer; line-height: 55px;" (click)="logout()">Logout</span>
+  </div>
+
+  <div class="mobile-nav">
+    <div style="flex: 1; line-height: 55px; color: gray; font-size: 22px;">
+      <span><i class="fa fa-terminal" aria-hidden="true"></i></span>
+    </div>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view=null" [ngClass]="{'active-link': view==null}">
+      <i class="fa fa-folder"></i>
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='editor'" [ngClass]="{'active-link': view=='editor'}">
+      <i class="fa fa-file"></i>
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='search'" [ngClass]="{'active-link': view=='search'}">
+      <i class="fa fa-search"></i>
+    </span>
+    <span style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center; text-decoration: none;"
+      (click)="view='settings'" [ngClass]="{'active-link': view=='settings'}">
+      <i class="fa fa-cogs"></i>
+    </span>
+
+    <!-- <span *ngFor="let tab of tabs; let i=index"
+      style="cursor: pointer; line-height: 55px; padding-left: 15px; padding-right: 15px; color: gray;  text-align: center;"
+      [style.background]="i==selectedIndex?'rgb(230,230,230)':'white'" (click)="selectTab(i)">
+      <i [class]="'fa '+tab.icon"></i>
+    </span> -->
+    <app-uploader-progress></app-uploader-progress>
+  </div>
+
+  <div class="router-wrapper">
+    <app-files (viewChanged)="view=$event"></app-files>
+    <app-editor *ngIf="view=='editor'"></app-editor>
+    <app-search *ngIf="view=='search'"></app-search>
+    <app-settings *ngIf="view=='settings'"></app-settings>
+    <!-- <router-outlet></router-outlet> -->
+  </div>
+</div>
+
+<!-- <div style="width: 100vw; height: 100vh;">
+
+  <div style="display: flex; height: calc(100vh - 60px); margin-top: 60px;">
+    <div
+      style="width: 250px; background: rgb(245,245,245); display: flex; flex-direction: column; border-right: 1px solid rgb(230,230,230);">
+      <div *ngFor="let tab of tabs; let i=index" style="display: flex; cursor: pointer;"
+        [style.background]="i==selectedIndex?'rgb(230,230,230)':'rgb(245,245,245)'" (click)="selectTab(i)">
+        <div
+          style="display: flex; flex-direction: column; padding: 10px; padding-left: 20px; padding-right: 20px; overflow: hidden;">
+          <span style="font-size: 18px; color: rgb(50,50,50); overflow: hidden;">{{tab.text}}</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex: 1; display: flex; width: calc(100vw - 250px);">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+-->
+
+<!-- <div *ngIf="session" [class]="session.displayMode+' desktop-terminal-wrapper'">
+  <div style="display: flex; justify-content: space-between; height: 40px;"
+    [ngClass]="{'rounded-top':session.displayMode!='fullscreen'}">
+    <span (click)="toggleMinimize()" style="cursor: pointer; line-height: 40px; padding-left: 10px;">Terminal</span>
+    <div>
+      <span (click)="toggleFullscreen()" style="line-height: 40px; padding-right: 10px; cursor: pointer;">
+        <i class="fa fa-expand" aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+  <app-terminal *ngIf="session&&session.displayMode!='minimized'"
+    [ngClass]="{'term-normal': session&&session.displayMode=='normal', 'term-fullscreen': session&&session.displayMode=='fullscreen'}"
+    [socket]="session.socket" [oldText]="session.bufferText" [appId]="session.appId"
+    [displayMode]="session.displayMode"></app-terminal>
+</div> -->
+
+<div *ngIf="session" class="terminal-btn" (click)="mobileTerminalVisible=true">
+  <span style="cursor: pointer; line-height: 50px; font-size: 20px; ">
+    <i class="fa fa-terminal" aria-hidden="true"></i>
+  </span>
+</div>
+
+<div style="position: fixed; width: 100vw; height: 100vh; z-index: 300; left: 0px; top: 0px; display: flex; flex-direction: column; background: rgb(40,40,40);"
+  *ngIf="mobileTerminalVisible">
+  <div style="display: flex; justify-content: space-between; width: 100%; height: 40px; line-height: 40px;">
+    <span style="padding-left: 10px; color: white;">Terminal</span>
+    <div style="display: flex;">
+      <span class="device-keyboard" tabindex="0" (click)="k.focus()" #k><i class="fa fa-keyboard-o" aria-hidden="true"></i></span>
+      <span style="padding-right: 10px; cursor: pointer; color: white;" (click)="mobileTerminalVisible=false">
+      <i class="fa fa-times"></i></span>
+    </div>
+  </div>
+  <app-terminal class="term-fullscreen" [socket]="session.socket" [oldText]="session.bufferText" [appId]="session.appId"
+    [displayMode]="fullscreen"></app-terminal>
+</div>

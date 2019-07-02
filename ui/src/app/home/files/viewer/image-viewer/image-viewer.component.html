@@ -1,0 +1,7 @@
+<div
+  style="position: fixed; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); left: 0px; top: 0px; z-index: 302; display: flex; flex-direction: column; justify-content: center; align-content: center; align-items: center;">
+  <img *ngIf="url" [src]="src" style="margin: auto; display: block; max-height: 90vh;">
+  <div style="position: fixed; top: 0px; right: 0px; padding: 10px; color: white; font-size: 20px; cursor: pointer;" (click)="close()">
+    <span><i class="fa fa-times"></i></span>
+  </div>
+</div>

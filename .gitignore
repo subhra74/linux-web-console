@@ -1,0 +1,44 @@
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+ui/dist
+ui/tmp
+ui/out-tsc
+
+# dependencies
+ui/node_modules
+
+# profiling files
+ui/chrome-profiler-events.json
+ui/speed-measure-plugin.json
+
+# IDEs and editors
+ui/.idea
+ui.project
+ui.classpath
+ui.c9/
+ui*.launch
+ui.settings/
+ui*.sublime-workspace
+
+
+
+# misc
+ui/.sass-cache
+ui/connect.lock
+ui/coverage
+ui/libpeerconnection.log
+uinpm-debug.log
+uiyarn-error.log
+uitestem.log
+ui/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+app/.mvn
+app/.settings/
+app/.classpath
+app/.project
