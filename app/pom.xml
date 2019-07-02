@@ -146,6 +146,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>ews</finalName>
 	</build>
 
 </project>
