@@ -42,3 +42,6 @@ app/.mvn
 app/.settings/
 app/.classpath
 app/.project
+app/target/
+
+app/src/main/resources/static
