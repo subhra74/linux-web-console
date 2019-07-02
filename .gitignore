@@ -45,3 +45,5 @@ app/.project
 app/target/
 
 app/src/main/resources/static
+
+ui/package-lock.json
