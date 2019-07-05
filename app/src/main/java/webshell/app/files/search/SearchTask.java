@@ -3,6 +3,7 @@
  */
 package webshell.app.files.search;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -11,16 +12,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import webshell.app.files.FileInfo;
 
 /**
  * @author subhro
  *
  */
 public class SearchTask implements Runnable {
+
+	private boolean posix;
+
 	/**
 	 * @param folder
 	 * @param searchText
@@ -28,13 +35,21 @@ public class SearchTask implements Runnable {
 	public SearchTask(String folder, String searchText) {
 		super();
 		this.id = UUID.randomUUID().toString();
-		this.folder = folder;
+		if (this.folder == null || this.folder.length() < 1) {
+			this.folder = System.getProperty("user.home");
+		} else {
+			this.folder = folder;
+		}
+
 		this.searchText = searchText.toLowerCase(Locale.ENGLISH);
+		posix = !System.getProperty("os.name").toLowerCase()
+				.contains("windows");
 	}
 
 	private String id;
 	private AtomicBoolean isDone = new AtomicBoolean(false);
-	private List<String> files = new ArrayList<>(), folders = new ArrayList<>();
+	private List<FileInfo> files = Collections
+			.synchronizedList(new ArrayList<>());
 	private String folder;
 	private String searchText;
 	private AtomicBoolean stopRequested = new AtomicBoolean(false);
@@ -56,29 +71,15 @@ public class SearchTask implements Runnable {
 	/**
 	 * @return the files
 	 */
-	public List<String> getFiles() {
+	public List<FileInfo> getFiles() {
 		return files;
 	}
 
 	/**
 	 * @param files the files to set
 	 */
-	public void setFiles(List<String> files) {
+	public void setFiles(List<FileInfo> files) {
 		this.files = files;
-	}
-
-	/**
-	 * @return the folders
-	 */
-	public List<String> getFolders() {
-		return folders;
-	}
-
-	/**
-	 * @param folders the folders to set
-	 */
-	public void setFolders(List<String> folders) {
-		this.folders = folders;
 	}
 
 	/**
@@ -104,13 +105,17 @@ public class SearchTask implements Runnable {
 				@Override
 				public FileVisitResult preVisitDirectory(Path dir,
 						BasicFileAttributes attrs) throws IOException {
-					//System.out.println("Search: " + dir.toString());
+					// System.out.println("Search: " + dir.toString());
 					if (stopRequested.get()) {
 						return FileVisitResult.TERMINATE;
 					}
 
 					if (isMatch(dir, searchText)) {
-						folders.add(dir.toAbsolutePath().toString());
+						File fdir = dir.toFile();
+						FileInfo info = new FileInfo(fdir.getName(),
+								fdir.getAbsolutePath(), "", "", "Directory", 0,
+								0, null, posix);
+						files.add(info);
 					}
 					return FileVisitResult.CONTINUE;
 				}
@@ -118,13 +123,17 @@ public class SearchTask implements Runnable {
 				@Override
 				public FileVisitResult visitFile(Path file,
 						BasicFileAttributes attrs) throws IOException {
-					//System.out.println("Search: " + file);
+					// System.out.println("Search: " + file);
 					if (stopRequested.get()) {
 						return FileVisitResult.TERMINATE;
 					}
 
 					if (isMatch(file, searchText)) {
-						files.add(file.toAbsolutePath().toString());
+						File f = file.toFile();
+						FileInfo info = new FileInfo(f.getName(),
+								f.getAbsolutePath(), "", "", "File", 0, 0, null,
+								posix);
+						files.add(info);
 					}
 					return FileVisitResult.CONTINUE;
 				}
@@ -132,7 +141,7 @@ public class SearchTask implements Runnable {
 				@Override
 				public FileVisitResult visitFileFailed(Path file,
 						IOException exc) throws IOException {
-					//System.out.println("visit failed: " + file);
+					// System.out.println("visit failed: " + file);
 					if (stopRequested.get()) {
 						return FileVisitResult.TERMINATE;
 					}
@@ -142,7 +151,7 @@ public class SearchTask implements Runnable {
 				@Override
 				public FileVisitResult postVisitDirectory(Path dir,
 						IOException exc) throws IOException {
-					//System.out.println("post visit failed: " + dir);
+					// System.out.println("post visit failed: " + dir);
 					if (stopRequested.get()) {
 						return FileVisitResult.TERMINATE;
 					}

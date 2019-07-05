@@ -37,18 +37,24 @@
   </div>
   <div *ngIf="ctx.searching" style="flex: 1; overflow: auto;">
     <div>
-      <div *ngFor="let file of ctx.files" style="cursor: pointer;" (click)="openFile(file)">
-        <span style="padding: 5px; padding-left: 10px;"><i class="fa fa-file" aria-hidden="true"></i></span>
-        <span style="padding: 5px;">{{file}}</span>
+      <div *ngFor="let file of ctx.files" style="cursor: pointer; padding: 10px; overflow: hidden;" (click)="openFile(file)">
+        <div>
+          <span style="padding: 5px;" *ngIf="file.type=='Directory'"><i class="fa fa-folder" aria-hidden="true"></i></span>
+          <span style="padding: 5px;" *ngIf="file.type!='Directory'"><i class="fa fa-file" aria-hidden="true"></i></span>
+          <span style="padding: 5px;">{{file.name}}</span>
+        </div>
+        <div>
+          <span style="padding: 5px;">{{file.path}}</span>
+        </div>
       </div>
-      <div *ngFor="let folder of ctx.folders" style="cursor: pointer;" (click)="openFolder(folder)">
+      <!-- <div *ngFor="let folder of ctx.folders" style="cursor: pointer;" (click)="openFolder(folder)">
         <span style="padding: 5px; padding-left: 10px;">
           <i class="fa fa-folder" aria-hidden="true"></i>
         </span>
         <span style="padding: 5px;">
           {{folder}}
         </span>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

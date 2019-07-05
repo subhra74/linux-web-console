@@ -11,6 +11,7 @@ import { EditorContext } from './model/editor-context';
 import { FileOperationItem } from './model/file-operation-item';
 import { SearchContext } from './model/search-context';
 import { PosixPermissions } from './model/posix-permissions';
+import { FileItem } from './model/file-item';
 
 
 const MAX_ACTIVE_UPLOAD = 5;
@@ -61,7 +62,7 @@ export class DataService {
     leafNode: false
   };
 
-  posix:boolean;
+  posix: boolean;
 
   tabs: FolderTab[] = [];
   selectedTab: number;
@@ -72,6 +73,10 @@ export class DataService {
   fileOperations: FileOperationItem[] = [];
 
   fileOpMonitor: any;
+
+  fileOpenRequests = new Subject<FileItem>();
+
+  currentViewChanger = new Subject<string>();
 
   terminalSession: TerminalSession;
 
@@ -99,7 +104,7 @@ export class DataService {
     return this.http.get<any>(environment.BASE_URL + "app/files/home");
   }
 
-  public downloadFiles(folder: string, files: string, tempToken:string) {
+  public downloadFiles(folder: string, files: string, tempToken: string) {
     window.location.href = environment.BIN_URL + "download?folder=" + btoa(folder) + "&files=" + btoa(files) + "&token=" + tempToken;
   }
 
@@ -393,7 +398,7 @@ export class DataService {
     return this.http.post<any>(environment.BASE_URL + "app/fs/touch", { name, dir });
   }
 
-  getTempToken():Observable<any> {
+  getTempToken(): Observable<any> {
     return this.http.get<any>(environment.BASE_URL + "token/temp");
   }
 

@@ -36,6 +36,8 @@ export class FilesComponent implements OnInit, OnDestroy {
   @Output()
   viewChanged = new EventEmitter<string>();
 
+  fileToOpen:FileItem;
+
   uploadPopup: boolean;
   hoverIndex: number = -1;
   showRenameDialog: boolean = false;
@@ -57,6 +59,15 @@ export class FilesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log("File browser init")
     this.posix = this.service.posix;
+
+    this.service.fileOpenRequests.subscribe((file: FileItem) => {
+      if (file.type == "Directory") {
+        this.navigateTo(file.path);
+      }else{
+        this.openItem(file);
+      }
+    });
+
     if (this.service.tabs.length < 1) {
       this.loading = true;
       this.service.listHome().subscribe((data: any) => {
@@ -105,6 +116,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   openItem(fileItem: FileItem) {
     let file: string = fileItem.path;
     this.loading = true;
+    this.fileToOpen=fileItem;
     console.log("Opening file: " + file)
     if (fileItem.type.startsWith("image")) {
       this.previewer = "image";
@@ -141,16 +153,16 @@ export class FilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  openAsText() {
-    let file: string;
-    for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
-      if (this.service.tabs[this.service.selectedTab].files[i].selected) {
-        file = this.service.tabs[this.service.selectedTab].files[i].path;
-        this.openWithTextEditor(file);
-        break;
-      }
-    }
-  }
+//  openAsText() {
+//     let file: string;
+//     for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
+//       if (this.service.tabs[this.service.selectedTab].files[i].selected) {
+//          file = this.service.tabs[this.service.selectedTab].files[i].path;
+//         this.openWithTextEditor(file);
+//         break;
+//       }
+//     }
+//   }
 
   navigateTo(file: string) {
     this.loading = true;
@@ -507,7 +519,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       }
     }
     this.loading = true;
-    if(!confirm("Are you sure, you want to delete?")){
+    if (!confirm("Are you sure, you want to delete?")) {
       this.loading = false;
       return;
     }
@@ -755,7 +767,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       return 'fa fa-file-pdf-o';
     }
     else if (file.type.startsWith("application/javascript") ||
-      file.type.includes("application/json")||
+      file.type.includes("application/json") ||
       file.type.includes("application/xml")) {
       return 'fa fa-file-text-o';
     }

@@ -33,11 +33,8 @@ public class SearchOperations {
 	public SearchResult getSearchResult(String id, int fileIndex,
 			int folderIndex) {
 		SearchTask task = pendingOperations.get(id);
-		SearchResult res = new SearchResult(task.isDone(),
-				task.getFiles().stream().skip(fileIndex)
-						.collect(Collectors.toList()),
-				task.getFolders().stream().skip(folderIndex)
-						.collect(Collectors.toList()));
+		SearchResult res = new SearchResult(task.isDone(), task.getFiles()
+				.stream().skip(fileIndex).collect(Collectors.toList()));
 		return res;
 	}
 

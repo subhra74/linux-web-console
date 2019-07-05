@@ -6,6 +6,8 @@ package webshell.app.files.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import webshell.app.files.FileInfo;
+
 /**
  * @author subhro
  *
@@ -16,16 +18,14 @@ public class SearchResult {
 	 * @param files
 	 * @param folders
 	 */
-	public SearchResult(boolean isDone, List<String> files,
-			List<String> folders) {
+	public SearchResult(boolean isDone, List<FileInfo> files) {
 		super();
 		this.isDone = isDone;
 		this.files = files;
-		this.folders = folders;
 	}
 
 	private boolean isDone;
-	private List<String> files = new ArrayList<>(), folders = new ArrayList<>();
+	private List<FileInfo> files = new ArrayList<>();
 
 	/**
 	 * @return the isDone
@@ -44,28 +44,14 @@ public class SearchResult {
 	/**
 	 * @return the files
 	 */
-	public List<String> getFiles() {
+	public List<FileInfo> getFiles() {
 		return files;
 	}
 
 	/**
 	 * @param files the files to set
 	 */
-	public void setFiles(List<String> files) {
+	public void setFiles(List<FileInfo> files) {
 		this.files = files;
-	}
-
-	/**
-	 * @return the folders
-	 */
-	public List<String> getFolders() {
-		return folders;
-	}
-
-	/**
-	 * @param folders the folders to set
-	 */
-	public void setFolders(List<String> folders) {
-		this.folders = folders;
 	}
 }

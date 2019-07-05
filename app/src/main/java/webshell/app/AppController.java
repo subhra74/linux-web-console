@@ -136,6 +136,9 @@ public class AppController {
 		File[] files = f.listFiles();
 		if (files != null && files.length > 0) {
 			for (File file : files) {
+				if (!file.isDirectory()) {
+					continue;
+				}
 				Map<String, Object> entry = new HashMap<>();
 				entry.put("name", file.getName());
 				entry.put("path", file.getAbsolutePath());
@@ -156,11 +159,13 @@ public class AppController {
 		File[] files = f.listFiles();
 		if (files != null && files.length > 0) {
 			for (File file : files) {
-				Map<String, Object> entry = new HashMap<>();
-				entry.put("name", file.getName());
-				entry.put("path", file.getAbsolutePath());
-				entry.put("leafNode", !file.isDirectory());
-				list.add(entry);
+				if (file.isDirectory()) {
+					Map<String, Object> entry = new HashMap<>();
+					entry.put("name", file.getName());
+					entry.put("path", file.getAbsolutePath());
+					entry.put("leafNode", !file.isDirectory());
+					list.add(entry);
+				}
 			}
 		}
 		return list;

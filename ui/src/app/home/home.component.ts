@@ -48,6 +48,9 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, public service: DataService) { }
 
   ngOnInit() {
+    this.service.currentViewChanger.subscribe((view: string) => {
+      this.view = view;
+    })
     if (!this.service.terminalSession) {
       this.service.connect().subscribe((data: any) => {
         console.log("terminal created on server: " + JSON.stringify(data));
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
         let ws: WebSocket = instance.createSocket(data.id, this.service.getJwtToken());
         ws.addEventListener('open', listener);
         ws.addEventListener('error', err => {
-          console.log("Error: "+JSON.stringify(err));
+          console.log("Error: " + JSON.stringify(err));
         });
       });
     } else {

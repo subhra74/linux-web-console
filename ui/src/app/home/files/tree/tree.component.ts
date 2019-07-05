@@ -82,8 +82,10 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onClick() {
-    console.log("tree clicked: " + this.model.path);
-    this.openInTab();
+    if (this.model.path) {
+      console.log("tree clicked: " + this.model.path);
+      this.openInTab();
+    }
   }
 
   onContextMenu(a: any, c: any) {
@@ -140,5 +142,4 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   copyPath() {
     console.log("copyPath " + this.model.path);
   }
-
 }

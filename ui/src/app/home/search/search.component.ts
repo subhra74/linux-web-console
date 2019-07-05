@@ -4,6 +4,7 @@ import { SearchContext } from 'src/app/model/search-context';
 import { EditorContext } from 'src/app/model/editor-context';
 import { utility } from '../../utility/utils';
 import { Router } from '@angular/router';
+import { FileItem } from 'src/app/model/file-item';
 
 @Component({
   selector: 'app-search',
@@ -78,31 +79,33 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  openFile(file: string) {
-    this.loading = true;
-    console.log("Opening file: " + file)
-    this.service.getText(file).subscribe((text: string) => {
-      this.service.selectedEditorTab = file;
-      let ctx = new EditorContext(utility.getFileName(file), file, text);
-      ctx.session.setUseWrapMode(false);
-      this.service.editorContexts[file] = ctx;
-      this.loading = false;
-      console.log("before route init of editor: " + JSON.stringify(Object.keys(this.service.editorContexts)))
-      this.router.navigate(["/app/editor"]);
-    });
+  openFile(file: FileItem) {
+    this.service.fileOpenRequests.next(file);
+    this.service.currentViewChanger.next(null);
+    // this.loading = true;
+    // console.log("Opening file: " + file)
+    // this.service.getText(file).subscribe((text: string) => {
+    //   this.service.selectedEditorTab = file;
+    //   let ctx = new EditorContext(utility.getFileName(file), file, text);
+    //   ctx.session.setUseWrapMode(false);
+    //   this.service.editorContexts[file] = ctx;
+    //   this.loading = false;
+    //   console.log("before route init of editor: " + JSON.stringify(Object.keys(this.service.editorContexts)));
+    //   this.router.navigate(["/app/editor"]);
+    // });
   }
 
-  openFolder(folder: string) {
-    this.service.tabs.push({
-      files: null,
-      currentDirectory: folder,
-      selected: true,
-      folderName: utility.getFileName(folder),
-      posix: false
-    });
-    this.service.selectedTab = this.service.tabs.length - 1;
-    this.router.navigate(["/app/files"]);
-  }
+  // openFolder(folder: string) {
+  //   this.service.tabs.push({
+  //     files: null,
+  //     currentDirectory: folder,
+  //     selected: true,
+  //     folderName: utility.getFileName(folder),
+  //     posix: false
+  //   });
+  //   this.service.selectedTab = this.service.tabs.length - 1;
+  //   this.router.navigate(["/app/files"]);
+  // }
 
   getItemCount() {
     let count = 0;

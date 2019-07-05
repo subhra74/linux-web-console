@@ -340,13 +340,13 @@
 </div>
 <!-- dropdown context  menu end -->
 
-<app-image-viewer [url]="getSelectedFile().path" *ngIf="previewer=='image'" (componentClosed)="previewer=null">
+<app-image-viewer [url]="fileToOpen.path" *ngIf="previewer=='image'" (componentClosed)="previewer=null">
 </app-image-viewer>
-<app-media-player [url]="getSelectedFile().path" *ngIf="previewer=='video'" (componentClosed)="previewer=null">
+<app-media-player [url]="fileToOpen.path" *ngIf="previewer=='video'" (componentClosed)="previewer=null">
 </app-media-player>
-<app-unsupported-content-viewer [url]="getSelectedFile().path" [file]="getSelectedFile().name"
+<app-unsupported-content-viewer [url]="fileToOpen.path" [file]="fileToOpen.name"
   *ngIf="previewer=='unsupported'" (componentClosed)="previewer=null" (onDownload)="downloadFiles()"
-  (onOpen)="openAsText();previewer=null">
+  (onOpen)="openWithTextEditor(fileToOpen.path);previewer=null">
 </app-unsupported-content-viewer>
 
 <div *ngIf="toastVisible"
