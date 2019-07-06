@@ -4,7 +4,7 @@ Easy to use web based file manager with built in text editor, terminal, image vi
 
 Installation
 - Install java
-- Download the binary archive from https://github.com/subhra74/easy-web-shell/releases/download/v0.1/ews-bin.zip
+- Download the binary archive from https://github.com/subhra74/easy-web-shell/releases
 - Extract the archive to a suitable location
 - Make file executable with chmod
 - Run ./start-ews.sh (For security reasons do not use root user)
