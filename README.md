@@ -2,6 +2,12 @@
 
 Easy to use web based file manager with built in text editor, terminal, image viewer and video player
 
+<img src="https://static-cdn.osdn.net/thumb/g/5/930/800x600_0.png">
+<img src="https://static-cdn.osdn.net/thumb/g/5/932/800x600_0.png">
+<img src="https://static-cdn.osdn.net/thumb/g/5/931/800x600_0.png">
+<img src="https://static-cdn.osdn.net/thumb/g/5/933/800x600_0.png">
+<img src="https://static-cdn.osdn.net/thumb/g/5/934/180x135_0.png">
+
 Installation
 - Install java
 - Download the binary archive from https://github.com/subhra74/easy-web-shell/releases
