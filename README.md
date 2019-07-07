@@ -9,11 +9,13 @@ It can be useful to you if you want to access/manage/deploy apps on a remote lin
 run commands using built in terminal, and view images and videos, all from your browser. Setting it up on server is also very easy, as it generates and configure itself to use self signed certificate for ssl.
 </p>
 
+<p>
 <img src="https://static-cdn.osdn.net/thumb/g/5/930/800x600_0.png" width="400" height="200">
 <img src="https://static-cdn.osdn.net/thumb/g/5/932/800x600_0.png" width="400" height="200">
 <img src="https://static-cdn.osdn.net/thumb/g/5/931/800x600_0.png" width="400" height="200">
 <img src="https://static-cdn.osdn.net/thumb/g/5/933/800x600_0.png" width="400" height="200">
 <img src="https://static-cdn.osdn.net/thumb/g/5/934/180x135_0.png" width="400" height="200">
+</p>
 
 Installation
 - Install java
