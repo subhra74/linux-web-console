@@ -146,7 +146,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>ews</finalName>
+		<finalName>cloud-shell</finalName>
 	</build>
 
 </project>

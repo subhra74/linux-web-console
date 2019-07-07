@@ -153,6 +153,9 @@ export class EditorComponent implements OnInit,AfterViewInit {
     this.service.setText(this.service.selectedEditorTab).subscribe((resp: any) => {
       console.log("save done");
       this.saving = false;
+    },err=>{
+      this.saving = false;
+      alert("Failed to save file");
     });
   }
 
