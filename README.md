@@ -1,4 +1,4 @@
-# Easy Web Shell
+# Easy Cloud Shell
 
 Easy to use web based file manager with built in text editor, terminal, image viewer and video player
 
@@ -17,12 +17,12 @@ run commands using built in terminal, and view images and videos, all from your 
 
 Installation
 - Install java
-- Download the binary archive from https://github.com/subhra74/easy-web-shell/releases
+- Download the binary archive from https://github.com/subhra74/easy-cloud-shell/releases
 - Extract the archive to a suitable location
 - Make file executable with chmod
 - Run ./start-ews.sh (For security reasons do not use root user)
 - Open recent version on Chrome or Firefox and visit https://[your ip address]:8055/ or, on local machine use https://localhost:8055/
-- Ignore any certificate error, appeared due to newly created self signed certificate by easy web shell.
+- Ignore any certificate error, appeared due to newly created self signed certificate by easy cloud shell.
 - Initial credential: 
 				Username: admin
 				Password: admin

@@ -1,5 +1,5 @@
 {
-  "name": "web-shell-js",
+  "name": "cloud-shell-js",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
