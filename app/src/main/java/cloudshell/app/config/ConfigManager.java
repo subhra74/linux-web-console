@@ -38,19 +38,19 @@ public class ConfigManager {
 
 	private static Path CONFIG_PATH = null;
 
-	private static final String CERTIFICATE_ALIAS = "webshell-cert";
+	private static final String CERTIFICATE_ALIAS = "cloudshell-cert";
 	private static final String CERTIFICATE_ALGORITHM = "RSA";
-	private static final String CERTIFICATE_DN = "CN=easy.webshell.app, O=easy.webshell.app, L=easy.webshell.app, ST=il, C=c";
+	private static final String CERTIFICATE_DN = "CN=easy.cloudshell.app, O=easy.cloudshell.app, L=easy.cloudshell.app, ST=il, C=c";
 	private static final int CERTIFICATE_BITS = 2048;
 
 	static {
 		Path configPath = null;
-		String configPathStr = System.getenv("EASY_WEB_SHELL_CONFIG_DIR");
+		String configPathStr = System.getenv("EASY_CLOUD_SHELL_CONFIG_DIR");
 		if (configPathStr == null || configPathStr.length() < 1) {
 			configPath = Paths.get(System.getProperty("user.home"),
-					".easy-web-shell");
+					".easy-cloud-shell");
 		} else {
-			configPath = Paths.get(configPathStr, ".easy-web-shell");
+			configPath = Paths.get(configPathStr, ".easy-cloud-shell");
 		}
 		CONFIG_PATH = configPath;
 		try {
@@ -184,7 +184,7 @@ public class ConfigManager {
 
 		try (OutputStream out = new FileOutputStream(certConf.toFile())) {
 			certProps.store(out,
-					"Easy webshell self signed certificate details");
+					"Easy cloud shell self signed certificate details");
 		}
 
 		System.out.println("Self signed certificate created");
