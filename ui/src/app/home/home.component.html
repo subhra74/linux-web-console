@@ -76,10 +76,13 @@
   </div>
 
   <div class="router-wrapper">
-    <app-files (viewChanged)="view=$event"></app-files>
-    <app-editor *ngIf="view=='editor'"></app-editor>
-    <app-search *ngIf="view=='search'"></app-search>
-    <app-settings *ngIf="view=='settings'"></app-settings>
+    <app-editor [style.display]="view=='editor'?'block':'none'" ></app-editor>
+    <app-search [style.display]="view=='search'?'block':'none'" ></app-search>
+    <app-settings [style.display]="view=='settings'?'block':'none'" ></app-settings>
+    <div style="width: 100vw; height: calc(100vh - 55px);" [style.display]="view?'none':'block'" >
+        <app-files  (viewChanged)="view=$event"></app-files>
+    </div>
+    
     <!-- <router-outlet></router-outlet> -->
   </div>
 </div>

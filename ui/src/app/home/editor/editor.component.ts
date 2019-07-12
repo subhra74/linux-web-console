@@ -31,7 +31,14 @@ export class EditorComponent implements OnInit,AfterViewInit {
   constructor(public service: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    console.log("editor: ngOnInit "+this.codeEditorElmRef);
     this.getTabbedSessions();
+
+    this.service.viewTextRequests.subscribe(a=>{
+      this.getTabbedSessions();
+      this.loadSession(this.service.selectedEditorTab);
+    });
+
       // console.log("selected tab: " + this.service.selectedEditorTab+" tabkexs: "+this.tabKeys);
     if(this.tabKeys.length<1){
       return;
@@ -62,9 +69,16 @@ export class EditorComponent implements OnInit,AfterViewInit {
     
   }
 
+  shouldShowTab(){
+    console.log("Tab count: "+this.tabKeys.length);
+    return this.tabKeys.length>0;
+  }
+
   ngAfterViewInit(){
+    console.log("editor: ngAfterViewInit "+this.codeEditorElmRef);
     ace.require('ace/ext/language_tools');
     if(!this.codeEditorElmRef){
+      console.log("Code editor reference not found");
       return;
     }
     const element = this.codeEditorElmRef.nativeElement;
@@ -96,6 +110,7 @@ export class EditorComponent implements OnInit,AfterViewInit {
 
   getTabbedSessions(): void {
     this.tabKeys = Object.keys(this.service.editorContexts);
+    console.log("tab keys: "+JSON.stringify(this.tabKeys))
     // this.service.editorContexts.forEach((value: EditorContext, key: string) => {
     //   this.tabKeys.push(key);
     //   console.log("tabbed key: " + key);
@@ -123,6 +138,9 @@ export class EditorComponent implements OnInit,AfterViewInit {
   }
 
   onResize(event: any) {
+    if(!this.codeEditorElmRef){
+      return;
+    }
     //console.log("window resized");
     let doc: any = this.codeEditor.getSession().getDocument();
     let r: any = this.codeEditor.renderer;

@@ -78,6 +78,8 @@ export class DataService {
 
   currentViewChanger = new Subject<string>();
 
+  viewTextRequests=new Subject<string>();
+
   terminalSession: TerminalSession;
 
   constructor(private http: HttpClient) {

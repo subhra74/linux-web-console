@@ -1,3 +1,13 @@
+.selected-tab{
+    border-bottom: 3px solid dodgerblue;
+    border-right: 1px solid rgb(230,230,230);
+}
+
+.normal-tab{
+    border-bottom: 3px solid rgb(240,240,240);
+    border-right: 1px solid rgb(230,230,230);
+}
+
 .nav-tree {
     height: 100%;
     width: 250px;
@@ -20,19 +30,15 @@
     max-width: calc(100vw - 250px);
 }
 
-.file-list-content-wrapper {
-    padding-top: 52px;
-}
-
 .file-list-header {
     display: flex;
     height: 51px;
     background: white;
     border-bottom: 1px solid rgb(230, 230, 230);
     cursor: pointer;
-    position: fixed;
+    position: sticky;
+    top: 0px;
     box-shadow: 0px 0px 6px 0px rgb(230, 230, 230);
-    z-index: 0;
 }
 
 .file-list-item-row {
@@ -66,6 +72,7 @@
 .desktop-nav {
     display: flex;
     padding: 10px;
+    padding-left: 15px;
     background: rgb(245, 245, 245);
     border-bottom: 1px solid rgb(230, 230, 230);
     flex-wrap: nowrap;
@@ -85,7 +92,8 @@
     height: 50px;
     width: 100%;
     display: flex;
-    background: rgb(230, 230, 230);
+    background: rgb(240, 240, 240);
+    border-bottom: 1px solid rgb(220,220,220);
 }
 
 .dropdown-ctx-menu {

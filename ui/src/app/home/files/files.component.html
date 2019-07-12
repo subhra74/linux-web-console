@@ -1,4 +1,4 @@
-<div style="height: 100%; width: 100%; display: flex;"  (click)="onWindowClicked(contextmenu)" class="noselect">
+<div style="height: 100%; width: 100%; display: flex; z-index: 5;"  (click)="onWindowClicked(contextmenu)" class="noselect">
   <!-- navigation tree start -->
   <div class="nav-tree">
     <!-- <app-tree [model]="service.tree1" [icon]="'fa-bookmark-o'"></app-tree> -->
@@ -14,7 +14,8 @@
     <div *ngIf="service.tabs.length>1" class="desktop-file-tabs">
       <div (click)="showTab(i)" (mouseenter)="hoverIndex=i" (mouseleave)="hoverIndex=-1"
         *ngFor="let tab of service.tabs; let i=index"
-        [ngStyle]="{'background': service.selectedTab==i? 'rgb(245,245,245)' :  'rgb(230,230,230)'}"
+        [ngClass]="service.selectedTab==i?'selected-tab': 'normal-tab'"
+        
         style="padding: 10px; padding-left: 10px; padding-right: 5px;  display: flex; justify-content: space-between; cursor: pointer;">
         <span style="line-height: 30px; margin-left: 10px; margin-right: 10px;">{{tab.folderName}}</span>
         <div style="width: 20px;">
@@ -101,7 +102,7 @@
 
     <div class="file-list" *ngIf="service.tabs[service.selectedTab]&&service.tabs[service.selectedTab].files">
       <!-- header start -->
-      <div [style.width]="content.clientWidth+'px'" class="file-list-header" #header>
+      <div class="file-list-header" #header>
         <span style="flex: 2; line-height: 50px; padding-left: 20px;" (click)="sort(0)">
           <span style="padding-right: 10px;">Name</span>
           <span *ngIf="this.sortColumn==0&&this.ascendingSort">
@@ -158,7 +159,7 @@
 
       <!-- actual content begin -->
 
-      <div #content class="file-list-content-wrapper" (keydown)="keyup($event)" id="list" #list>
+      <div #content (keydown)="keyup($event)" id="list" #list>
         <div *ngFor="let file of service.tabs[service.selectedTab].files; let i=index" class="file-list-item-row"
           [style.color]="file.selected?'white':'black'" [style.background]="file.selected?'deepskyblue':'white'"
           (dblclick)="file.type === 'Directory'?navigateTo(file.path): openItem(file)"

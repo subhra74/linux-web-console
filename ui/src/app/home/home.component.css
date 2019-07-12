@@ -50,6 +50,7 @@
     height: calc(100vh - 40px);
 }
 
+
 .router-wrapper {
     padding-top: 55px;
     height: 100%;
@@ -72,7 +73,8 @@
 
 .desktop-nav {
     height: 55px;
-    background: rgb(33, 37, 43);
+    /* background: rgb(33, 37, 43); */
+    background: rgb(36, 46, 43);;
     display: flex;
     justify-content: flex-end;
     box-shadow: 0px 3px 6px 0px rgb(200, 200, 200);

@@ -1,5 +1,4 @@
-<div style="height: calc(100vh - 55px); width: 100vw; display: flex; flex-direction: column; position: fixed; top: 55px; left: 0px; z-index: 100; background: white;"
-       *ngIf="tabKeys.length>0">
+<div style="height: calc(100vh - 55px); width: 100vw; display: flex; flex-direction: column; position: fixed; top: 55px; left: 0px; background: white; z-index: 10;">
        <div class="desktop-tabs" *ngIf="service.selectedEditorTab">
               <div *ngFor="let tab of tabKeys"
                      style="padding: 10px; padding-left: 5px; padding-right: 5px; display: flex; justify-content: space-between;"
@@ -32,6 +31,6 @@
 </div>
 
 <div *ngIf="tabKeys.length<1"
-       style="height: calc(100vh - 55px); width: 100vw; position: fixed; top: 55px; left: 0px; z-index: 100; background: white; text-align: center; padding-top: 30px;">
+       style="height: calc(100vh - 55px); width: 100vw; position: fixed; top: 55px; left: 0px;  background: white; text-align: center; padding-top: 30px;">
        <span>No file is opened, please goto files and select some.</span>
 </div>

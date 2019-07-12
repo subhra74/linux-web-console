@@ -27,7 +27,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   toastVisible: boolean = false;
   toastMessage: string;
 
-  @ViewChild("list")
+  @ViewChild("content")
   list: ElementRef;
 
   @ViewChild("header")
@@ -36,7 +36,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   @Output()
   viewChanged = new EventEmitter<string>();
 
-  fileToOpen:FileItem;
+  fileToOpen: FileItem;
 
   uploadPopup: boolean;
   hoverIndex: number = -1;
@@ -63,7 +63,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.service.fileOpenRequests.subscribe((file: FileItem) => {
       if (file.type == "Directory") {
         this.navigateTo(file.path);
-      }else{
+      } else {
         this.openItem(file);
       }
     });
@@ -116,7 +116,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   openItem(fileItem: FileItem) {
     let file: string = fileItem.path;
     this.loading = true;
-    this.fileToOpen=fileItem;
+    this.fileToOpen = fileItem;
     console.log("Opening file: " + file)
     if (fileItem.type.startsWith("image")) {
       this.previewer = "image";
@@ -144,7 +144,8 @@ export class FilesComponent implements OnInit, OnDestroy {
       ctx.session.setUseWrapMode(false);
       this.service.editorContexts[file] = ctx;
       this.loading = false;
-      console.log("before route init of editor: " + JSON.stringify(Object.keys(this.service.editorContexts)))
+      console.log("before route init of editor: " + JSON.stringify(Object.keys(this.service.editorContexts)));
+      this.service.viewTextRequests.next("changed");
       this.viewChanged.emit("editor");
       //this.router.navigate(["/app/editor"]);
     }, err => {
@@ -153,16 +154,16 @@ export class FilesComponent implements OnInit, OnDestroy {
     });
   }
 
-//  openAsText() {
-//     let file: string;
-//     for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
-//       if (this.service.tabs[this.service.selectedTab].files[i].selected) {
-//          file = this.service.tabs[this.service.selectedTab].files[i].path;
-//         this.openWithTextEditor(file);
-//         break;
-//       }
-//     }
-//   }
+  //  openAsText() {
+  //     let file: string;
+  //     for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
+  //       if (this.service.tabs[this.service.selectedTab].files[i].selected) {
+  //          file = this.service.tabs[this.service.selectedTab].files[i].path;
+  //         this.openWithTextEditor(file);
+  //         break;
+  //       }
+  //     }
+  //   }
 
   navigateTo(file: string) {
     this.loading = true;
@@ -398,8 +399,9 @@ export class FilesComponent implements OnInit, OnDestroy {
     let content: HTMLElement = this.list.nativeElement as HTMLElement;
     let h: HTMLElement = this.header.nativeElement as HTMLElement;
     console.log("window resized " + content.clientWidth);
-    h.style.width = content.clientWidth + "px";
-    console.log("Header width: " + h.style.width);
+    let s = getComputedStyle(content);
+    //h.style.width = (s.getPropertyValue("width"));
+    console.log("Header width: " + s.getPropertyValue("width"));
   }
 
   onWindowClicked(c) {
@@ -439,8 +441,10 @@ export class FilesComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
       if (this.service.tabs[this.service.selectedTab].files[i].selected) {
         let path = this.service.tabs[this.service.selectedTab].files[i].path;
-        this.navigateTo(path);
-        break;
+        if (this.service.tabs[this.service.selectedTab].files[i].type === "Directory") {
+          this.navigateTo(path);
+          break;
+        }
       }
     }
   }
