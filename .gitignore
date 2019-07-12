@@ -47,3 +47,6 @@ app/target/
 app/src/main/resources/static
 
 ui/package-lock.json
+app/cloud-shell-bin.tar
+app/cloud-shell-bin.tar.gz
+app/cloud-shell.jar
