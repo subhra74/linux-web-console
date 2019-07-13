@@ -1,9 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,7 +57,10 @@ import { NewItemComponent } from './home/files/browser/new-item/new-item.compone
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule, 
+    NgxChartsModule,
+    ChartsModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

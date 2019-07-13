@@ -29,7 +29,6 @@ public class FileTypeDetector {
 			return tika.detect(file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return "application/octet-stream";
 		}
 	}

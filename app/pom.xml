@@ -78,16 +78,16 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.54</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>net.java.dev.jna</groupId> -->
-		<!-- <artifactId>jna-platform</artifactId> -->
-		<!-- <version>5.3.1</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>net.java.dev.jna</groupId> -->
-		<!-- <artifactId>jna</artifactId> -->
-		<!-- <version>5.3.1</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.3.1</version>
+		</dependency>
 		<!-- <dependency> -->
 		<!-- <groupId>log4j</groupId> -->
 		<!-- <artifactId>log4j</artifactId> -->
@@ -126,6 +126,32 @@
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
 			<version>1.21</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-dist</artifactId>
+			<version>3.13.3</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>3.13.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-json</artifactId>
+			<version>3.13.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-parent</artifactId>
+			<version>3.13.3</version>
+			<type>pom</type>
 		</dependency>
 
 	</dependencies>

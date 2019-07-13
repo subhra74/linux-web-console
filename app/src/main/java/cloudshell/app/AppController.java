@@ -36,6 +36,9 @@ import cloudshell.app.files.PosixPermission;
 import cloudshell.app.files.copy.FileCopyProgressResponse;
 import cloudshell.app.files.copy.FileCopyRequest;
 import cloudshell.app.files.search.SearchResult;
+import cloudshell.app.health.ProcessInfo;
+import cloudshell.app.health.SystemHealthMonitor;
+import cloudshell.app.health.SystemStats;
 import cloudshell.app.terminal.PtySession;
 
 /**
@@ -55,6 +58,9 @@ public class AppController {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private SystemHealthMonitor healthMon;
 
 	@PostMapping("/app/terminal/{appId}/resize")
 	public void resizePty(@PathVariable String appId,
@@ -312,6 +318,24 @@ public class AppController {
 		String name = map.get("name");
 		Path path = Paths.get(dir, name);
 		Files.createFile(path);
+	}
+
+	@GetMapping("/app/sys/stats")
+	public SystemStats getStats() {
+		return this.healthMon.getStats();
+	}
+
+	@GetMapping("/app/sys/procs")
+	public List<ProcessInfo> getProcessList() {
+		return this.healthMon.getProcessList();
+	}
+
+	@PostMapping("/app/sys/procs")
+	public Map<String, Boolean> killProcesses(
+			@RequestBody List<Integer> pidList) {
+		Map<String, Boolean> map = new HashMap<>();
+		map.put("success", this.healthMon.killProcess(pidList));
+		return map;
 	}
 
 }

@@ -1,0 +1,13 @@
+.search-box{
+    border-bottom: 1px solid green;
+    margin-right: 10px;
+}
+
+.search-text{
+    border: none;
+    margin-left: 5px;
+}
+
+.search-text:focus{
+    outline: none;
+}

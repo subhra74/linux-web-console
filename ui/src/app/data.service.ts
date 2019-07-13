@@ -78,7 +78,7 @@ export class DataService {
 
   currentViewChanger = new Subject<string>();
 
-  viewTextRequests=new Subject<string>();
+  viewTextRequests = new Subject<string>();
 
   terminalSession: TerminalSession;
 
@@ -402,6 +402,18 @@ export class DataService {
 
   getTempToken(): Observable<any> {
     return this.http.get<any>(environment.BASE_URL + "token/temp");
+  }
+
+  getSystemStats(): Observable<any> {
+    return this.http.get<any>(environment.BASE_URL + "app/sys/stats");
+  }
+
+  getProcessList(): Observable<any[]> {
+    return this.http.get<any[]>(environment.BASE_URL + "app/sys/procs");
+  }
+
+  killProcesses(pids: any[]): Observable<any> {
+    return this.http.post<any>(environment.BASE_URL + "app/sys/procs", pids);
   }
 
 }
