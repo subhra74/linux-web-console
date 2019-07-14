@@ -1,5 +1,5 @@
-const GB = 1024 * 1024 * 1024;
-const MB = 1024 * 1024;
+const GB = 1024 * 1000 * 1000;
+const MB = 1024 * 1000;
 const KB = 1024;
 export const utility = {
 

@@ -3,7 +3,7 @@
   <div style="display: flex; justify-content: space-around; flex-wrap: wrap; padding: 20px;">
     <div>
       <div style="text-align: center; padding: 10px; font-size: 20px;">
-        <span>CPU USAGE {{cpuUsageSet[0][0].toFixed(1)}}%</span>
+        <span>CPU USAGE {{toPercent(cpu)}}%</span>
       </div>
       <div class="chart-container" style="height:200px; position: relative; width: 200px;">
         <canvas baseChart [data]="cpuUsageSet" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="colors"
@@ -13,7 +13,7 @@
     </div>
     <div>
       <div style="text-align: center; padding: 10px; font-size: 20px;">
-        <span>MEMORY USAGE {{memoryUsageSet[0][0].toFixed(1)}}%</span>
+        <span>MEMORY USAGE {{toPercent(memory)}}%</span>
       </div>
       <div class="chart-container" style="height:200px; position: relative; width: 200px;">
         <canvas baseChart [data]="memoryUsageSet" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="colors"
@@ -23,7 +23,7 @@
     </div>
     <div>
       <div style="text-align: center; padding: 10px; font-size: 20px;">
-        <span>DISKSPACE USAGE {{diskUsageSet[0][0].toFixed(1)}}%</span>
+        <span>DISKSPACE USAGE {{toPercent(disk)}}%</span>
       </div>
       <div class="chart-container" style="height:200px; position: relative; width: 200px;">
         <canvas baseChart [data]="diskUsageSet" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="colors"
@@ -33,7 +33,7 @@
     </div>
     <div>
       <div style="text-align: center; padding: 10px; font-size: 20px;">
-        <span>SWAP USAGE {{swapUsageSet[0][0].toFixed(1)}}%</span>
+        <span>SWAP USAGE {{toPercent(swap)}}%</span>
       </div>
       <div class="chart-container" style="height:200px; position: relative; width: 200px;">
         <canvas baseChart [data]="swapUsageSet" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="colors"
@@ -48,8 +48,8 @@
     </div>
     <div style="display: flex;">
       <div style="display: flex; padding-right: 10px;" class="search-box" tabindex="0">
-        <input type="text" class="search-text" placeholder="Search process">
-        <span>
+        <input type="text" class="search-text" placeholder="Search process" #text>
+        <span (click)="searchText=text.value;filterProcesses()">
           <i class="fa fa-search" aria-hidden="true"></i>
         </span>
       </div>
@@ -63,29 +63,69 @@
     <table class="table table-striped table-sm table-borderless" style="position: relative;">
       <thead>
         <tr>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">NAME</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">PID</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">PRIORITY</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">CPU USAGE</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">MEMORY</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">VIRTUAL MEMORY</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">USER</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">START TIME</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">STATE</th>
-          <th scope="col" style="position: sticky; top: 0px; background: white;">COMMAND</th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(0)">
+            <span>NAME</span>
+            <span *ngIf="sortingField==0&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==0&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(1)">
+            <span>PID</span>
+            <span *ngIf="sortingField==1&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==1&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(2)">
+            <span>PRIORITY</span>
+            <span *ngIf="sortingField==2&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==2&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(3)">
+            <span>CPU USAGE</span>
+            <span *ngIf="sortingField==3&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==3&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(4)">
+            <span>MEMORY</span>
+            <span *ngIf="sortingField==4&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==4&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(5)">
+            <span>VIRTUAL MEMORY</span>
+            <span *ngIf="sortingField==5&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==5&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(6)">
+            <span>USER</span>
+            <span *ngIf="sortingField==6&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==6&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(7)">
+            <span>START TIME</span>
+            <span *ngIf="sortingField==7&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==7&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(8)">
+            <span>STATE</span>
+            <span *ngIf="sortingField==8&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==8&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
+          <th scope="col" style="position: sticky; top: 0px; background: white; cursor: pointer;" (click)="setSortField(9)">
+            <span>COMMAND</span>
+            <span *ngIf="sortingField==9&&sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            <span *ngIf="sortingField==9&&!sortAsc" style="padding-left: 10px;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let proc of processList">
+        <tr *ngFor="let proc of filteredProcessList">
           <td><input type="checkbox" [checked]="proc.selected"
             (change)="proc.selected = !proc.selected" ><span style="padding-left: 10px;">{{proc.name}}</span></td>
           <td>{{proc.pid}}</td>
           <td>{{proc.priority}}</td>
-          <td>{{proc.cpuUsage}}</td>
-          <td>{{proc.memoryUsage}}</td>
-          <td>{{proc.vmUsage}}</td>
+          <td>{{toPercent(proc.cpuUsage)}}</td>
+          <td>{{formatSize(proc.memoryUsage)}}</td>
+          <td>{{formatSize(proc.vmUsage)}}</td>
           <td>{{proc.user}}</td>
-          <td>{{proc.startTime}}</td>
+          <td>{{toDate(proc.startTime)|date:'medium'}}</td>
           <td>{{proc.state}}</td>
           <td style="overflow-wrap: break-word; max-width: 200px;">
               {{proc.command}}

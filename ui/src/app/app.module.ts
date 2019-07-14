@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {NgxChartsModule} from '@swimlane/ngx-charts';
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -59,7 +58,6 @@ import { NewItemComponent } from './home/files/browser/new-item/new-item.compone
     NgbModule,
     HttpClientModule,
     BrowserAnimationsModule, 
-    NgxChartsModule,
     ChartsModule
   ],
   providers: [httpInterceptorProviders],
