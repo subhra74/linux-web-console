@@ -82,6 +82,17 @@ public class SystemHealthMonitor {
 		return stats;
 	}
 
+	private String formatCmd(String args) {
+		StringBuilder sb = new StringBuilder();
+		for (char ch : args.toCharArray()) {
+			if (ch == 0) {
+				sb.append(" ");
+			}
+			sb.append(ch);
+		}
+		return sb.toString();
+	}
+
 	public synchronized List<ProcessInfo> getProcessList() {
 		OSProcess[] procs = os.getProcesses(0, null, false);
 		List<ProcessInfo> list = new ArrayList<>();

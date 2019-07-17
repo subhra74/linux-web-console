@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { MultiDataSet, Label, Colors, Color } from 'ng2-charts';
 import { DataService } from 'src/app/data.service';
@@ -12,7 +12,7 @@ import { utility } from '../../utility/utils';
     '(window:resize)': 'onResize($event)'
   }
 })
-export class MonitoringComponent implements OnInit {
+export class MonitoringComponent implements OnInit, OnDestroy {
 
   public doughnutChartLabels: Label[] = ['Used', 'Free'];
   public colors: Color[] = [
@@ -54,6 +54,9 @@ export class MonitoringComponent implements OnInit {
   searchText: string;
   sortingField: number = -1;
   sortAsc: boolean;
+  loading: boolean;
+  message: string;
+  error: boolean;
 
   constructor(private service: DataService) { }
 
@@ -65,13 +68,25 @@ export class MonitoringComponent implements OnInit {
     }, 5000);
   }
 
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
   public getProcStats() {
+    this.loading = true;
     this.service.getProcessList().subscribe((resp: any[]) => {
       this.processList = resp;
       for (let proc of this.processList) {
         proc.selected = false;
       }
       this.filterProcesses();
+      this.loading = false;
+    }, err => {
+      this.loading = false;
+      this.message = "Unable to get process details";
+      this.error = true;
     });
   }
 
@@ -87,12 +102,22 @@ export class MonitoringComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     this.service.killProcesses(pids).subscribe((resp: any) => {
       if (!resp.success) {
-        alert("Failed to kill");
+        //alert("Failed to kill");
+        this.message = "Failed to kill one or more selected processes";
+        this.error = true;
+        this.loading = false;
       } else {
+        this.message = "Selected processes are killed successfully";
+        this.error = false;
         this.getProcStats();
       }
+    }, err => {
+      this.message = "Failed to kill one or more selected processes";
+      this.error = true;
+      this.loading = false;
     })
   }
 
@@ -212,7 +237,7 @@ export class MonitoringComponent implements OnInit {
     return utility.formatSize(n);
   }
 
-  toDate(n:number):Date{
+  toDate(n: number): Date {
     return new Date(n);
   }
 }

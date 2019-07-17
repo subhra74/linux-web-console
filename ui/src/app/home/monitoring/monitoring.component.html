@@ -1,5 +1,10 @@
 <div
   style="height: calc(100vh - 55px); width: 100vw; display: flex; flex-direction: column; position: fixed; top: 55px; left: 0px; background: white; z-index: 10;">
+  <div *ngIf="message" (click)="message=null" style="cursor: pointer;;padding: 10px; position: absolute; z-index: 255; top: 20px; right: 20px; opacity: 0.78; width: 250px; border-radius: 10px; box-shadow: 2px 2px 15px 5px black ;" [style.background]="error?'darkred':'green'">
+    <span style="color: white;">
+      {{message}}
+    </span>
+  </div>
   <div style="display: flex; justify-content: space-around; flex-wrap: wrap; padding: 20px;">
     <div>
       <div style="text-align: center; padding: 10px; font-size: 20px;">
@@ -133,5 +138,11 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div *ngIf="loading" style="height: calc(100vh - 55px); width: 100vw; display: flex; flex-direction: column; position: fixed; top: 55px; left: 0px; background: rgba(0,0,0,0.1); z-index: 101; justify-content: center; align-items: center;">
+  <div class="spinner-border text-primary" style="width: 5rem; height: 5rem; font-size: 30px;" role="status">
+    <span class="sr-only">Loading...</span>
   </div>
 </div>
