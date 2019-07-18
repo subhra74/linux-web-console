@@ -4,11 +4,9 @@
 package cloudshell.app.health;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -101,7 +99,7 @@ public class SystemHealthMonitor {
 				ProcessInfo info = new ProcessInfo();
 				info.setPid(proc.getProcessID());
 				info.setName(proc.getName());
-				info.setCommand(proc.getCommandLine());
+				info.setCommand(formatCmd(proc.getCommandLine()));
 				info.setCpuUsage(proc.calculateCpuPercent());
 				info.setMemoryUsage(proc.getResidentSetSize());
 				info.setVmUsage(proc.getVirtualSize());
