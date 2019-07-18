@@ -95,15 +95,15 @@ export class DataService {
   }
 
   public listFiles(path: string): Observable<any> {
-    return this.http.get<any>(environment.BASE_URL + "app/files/list/" + btoa(path));
+    return this.http.get<any>(environment.BASE_URL + "app/folders/" + btoa(path));
   }
 
   public goUp(path: string): Observable<any> {
-    return this.http.get<any>(environment.BASE_URL + "app/files/up/" + btoa(path));
+    return this.http.get<any>(environment.BASE_URL + "app/folders/" + btoa(path)+"/parent");
   }
 
   public listHome(): Observable<any> {
-    return this.http.get<any>(environment.BASE_URL + "app/files/home");
+    return this.http.get<any>(environment.BASE_URL + "app/folders/home");
   }
 
   public downloadFiles(folder: string, files: string, tempToken: string) {
