@@ -19,7 +19,7 @@ run commands using built in terminal, and view images and videos, all from your 
 
 Installation
 - Install java
-- Download the binary archive from https://github.com/subhra74/easy-cloud-shell/releases
+- Download the binary archive from https://github.com/subhra74/linux-web-console/releases
 - Extract the archive to a suitable location
 - Make file executable with chmod
 - Run ./start-cloud-shell.sh (For security reasons do not use root user)
