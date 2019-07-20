@@ -31,17 +31,17 @@ public class HealthApiController {
 	@Autowired
 	private SystemHealthMonitor healthMon;
 
-	@GetMapping("/app/sys/stats")
+	@GetMapping("/sys/stats")
 	public SystemStats getStats() {
 		return this.healthMon.getStats();
 	}
 
-	@GetMapping("/app/sys/procs")
+	@GetMapping("/sys/procs")
 	public List<ProcessInfo> getProcessList() {
 		return this.healthMon.getProcessList();
 	}
 
-	@PostMapping("/app/sys/procs")
+	@PostMapping("/sys/procs")
 	public Map<String, Boolean> killProcesses(
 			@RequestBody List<Integer> pidList) {
 		Map<String, Boolean> map = new HashMap<>();
