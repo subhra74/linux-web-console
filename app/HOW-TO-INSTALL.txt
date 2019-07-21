@@ -1,10 +1,10 @@
 1. Install java and make sure java is in PATH
-2. Download the binary archive from https://github.com/subhra74/easy-cloud-shell/releases
+2. Download the binary archive from https://github.com/subhra74/linux-web-console/releases
 3. Extract the archive to a suitable location and switch to that directory
 4. Make file executable with chmod if required
-5. Run ./start-cloud-shell.sh (For security reasons do not use root user)
+5. Run ./start-web-console.sh (For security reasons do not use root user)
 6. Open recent version on Chrome or Firefox and visit https://[your ip address]:8055/ or, on local machine use https://localhost:8055/
-7. Ignore any certificate error, appeared due to newly created self signed certificate by easy cloud shell.
+7. Ignore any certificate error, appeared due to newly created self signed certificate by the app.
 8. Initial credential: admin/admin
    Please change default username and password from Settings tab in the app. 
    Also you can change default port by setting environment variable server.port=<any port number>

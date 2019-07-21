@@ -452,14 +452,16 @@ export class FilesComponent implements OnInit, OnDestroy {
   openInNewTab() {
     for (let i = 0; i < this.service.tabs[this.service.selectedTab].files.length; i++) {
       if (this.service.tabs[this.service.selectedTab].files[i].selected) {
-        let path = this.service.tabs[this.service.selectedTab].files[i].path;
-        let name = this.service.tabs[this.service.selectedTab].files[i].name;
-        let tab: FolderTab = new FolderTab();
-        tab.currentDirectory = path;
-        tab.folderName = name;
-        tab.files = null;
-        this.service.newTabListener.next(tab);
-        break;
+        if (this.service.tabs[this.service.selectedTab].files[i].type === "Directory") {
+          let path = this.service.tabs[this.service.selectedTab].files[i].path;
+          let name = this.service.tabs[this.service.selectedTab].files[i].name;
+          let tab: FolderTab = new FolderTab();
+          tab.currentDirectory = path;
+          tab.folderName = name;
+          tab.files = null;
+          this.service.newTabListener.next(tab);
+          break;
+        }
       }
     }
   }
