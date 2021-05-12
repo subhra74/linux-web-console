@@ -26,7 +26,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.2.0",
     "@swimlane/ngx-charts": "^12.0.1",
     "bootstrap": "^4.3.1",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "font-awesome": "^4.7.0",
     "ng2-ace-editor": "^0.3.9",
     "ng2-charts": "2.2.5",
